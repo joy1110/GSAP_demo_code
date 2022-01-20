@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- css -->
+    <link href="./showcase.css" rel="stylesheet">
+    <!-- gsap js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.5.1/gsap.min.js"></script>
+    <!-- jQuery -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <title>Document</title>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="bar">
+            <div class="humbar"></div>
+        </div>
+        <h2>使用gsap製作選單</h2>
+        <!-- 隱藏選單 -->
+        <nav>
+            <div class="close_bar">
+                <div></div>
+            </div>
+            <ul>
+                <li class="item"><a href="#">首頁</a></li>
+                <li class="item"><a href="#">關於我們</a></li>
+                <li class="item"><a href="#">專案</a></li>
+                <li class="item"><a href="#">聯絡我們</a></li>
+            </ul>
+        </nav>
+    </div>
+
+    <script>
+
+        let tl = gsap.timeline({
+            paused: true,   //預設暫停的屬性
+        });
+
+        tl.to('nav', {
+            right: 0,   //可直接寫CSS屬性
+        }).to('nav', {
+            height: '100vh',
+        }).to('nav ul li', {
+            opacity: 1,
+            stagger: .3,    //控制多個元素依次出現的間隔時長
+        }).to('.close_bar', {
+            opacity: 1,
+            delay: -.4,     //負數會提早出現
+        });
+
+        document.getElementsByClassName('humbar')[0].addEventListener('click', function(){
+            tl.play().timeScale(2);     //可同時調整播放速度，注意timeScale()的位置在播放之後
+        });
+        document.getElementsByClassName('close_bar')[0].addEventListener('click', function(){
+            tl.timeScale(3).reverse();    //可同時填整播放速度，注意timeScale()的位置在反向播放之前
+        });
+   
+    </script>
+</body>
+</html>

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- css -->
+    <link href="./style.css" rel="stylesheet">
+    <!-- gsap js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.5.1/gsap.min.js"></script>
+    <!-- jQuery -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <title>Document</title>
+</head>
+<body>
+    <div class="wrapper">
+        <section>
+            <div class="control">
+                <div class="btn" id="play">play</div>
+                <div class="btn" id="pause">pause</div>
+                <div class="btn" id="reverse">reverse</div>
+                <div class="btn" id="scalefast">fast</div>
+                <div class="btn" id="scalelow">low</div>
+            </div>
+            <div class="box green mv11">mv</div>
+        </section>
+
+        <section>
+            <div class="btn" id="menu">選單</div>
+                <ul class="nav">
+                    <li>選單</li>
+                    <li>選單</li>
+                    <li>選單</li>
+                    <li>選單</li>
+                    <li>選單</li>
+                    <li>選單</li>
+                </ul>
+        </section>
+    </div>
+
+
+    <script>
+
+        //環境建置
+        let play_btn = document.getElementById("play");
+        let pause_btn = document.getElementById("pause");
+        let reverse_btn = document.getElementById("reverse");
+        let scalefast_btn = document.getElementById("scalefast");
+        let scalelow_btn = document.getElementById("scalelow");
+        
+        let mv = gsap.to('.mv11', {
+            duration: 3,
+            x: 300,
+            y: 300,
+            repeat: -1,
+            yoyo: true,
+            rotation: 360,
+            ease: "power2.out",
+        });
+
+        //停止預設的動畫播放
+        mv.pause();
+
+        //按鈕設定監聽點擊事件，並執行對應處理
+        play_btn.addEventListener('click', function(){
+            mv.play();  //播放的方法，若已在停止點則無作用
+        });
+        pause_btn.addEventListener('click', function(){
+            mv.pause();  //暫停的方法
+        });
+        reverse_btn.addEventListener('click', function(){
+            mv.reverse();  //反轉播放的方法，若已在起始點則無作用
+        });
+        scalefast_btn.addEventListener('click', function(){
+            mv.timeScale(2);  //大於1就是變快
+        });
+        scalelow_btn.addEventListener('click', function(){
+            mv.timeScale(0.5);  //小數就是變慢
+        });
+
+
+        let menu = gsap.to('.nav', {
+            x: 100,
+            duration: 1,
+        });
+
+        
+        menu.reversed(true);    //reversed()會判斷動畫是否播到了結束處，並回傳boolean值。預設是false，播放完時也是false，倒帶回去時則會變true。若有帶入參數就會修改其值，每次播放完也會切換其值，此處帶入true同時會停止預設的播放。
+
+        let menu_btn = document.getElementById("menu");
+        menu_btn.addEventListener('click', function(){
+            if(menu.reversed()){  
+                menu.play();
+            }else{
+                menu.reverse();
+            }
+        });
+    </script>
+</body>
+</html>

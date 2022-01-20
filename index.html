@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- css -->
+    <link href="./style.css" rel="stylesheet">
+    <!-- gsap js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.5.1/gsap.min.js"></script>
+    <!-- jQuery -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <title>gsap 基本</title>
+</head>
+<body>
+    <div class="wrapper">
+        <section>
+            <div class="box green mv01">
+                物件
+            </div>
+            <div class='box green mv02'>
+                物件2
+            </div>
+            <div class='box green mv03'>
+                物件3
+            </div>
+            <div class='box green mv04'>
+                物件4
+            </div>
+        </section>
+
+        <section class="scene2">
+            <div class="box green mv05">
+                物件5
+            </div>
+        </section>
+
+        <section class="scene3">
+            <div class="box green mv06">
+                物件6
+            </div>
+            <div class="box green mv07">
+                物件7
+            </div>
+            <div class="box green mv08">
+                物件8
+            </div>
+        </section>
+
+        <section class="scene4">
+            <div class="box green mv09">
+                物件9
+            </div>
+        </section>
+
+        <section class="scene5">
+            <div class="box green mv10">
+                物件10
+            </div>
+        </section>
+
+        <section class="scene6">
+            <div class="box green stagger"></div>
+            <div class="box green stagger"></div>
+            <div class="box green stagger"></div>
+            <div class="box green stagger"></div>
+            <div class="title stagger">文案</div>
+        </section>
+
+    </div>
+    
+
+    <script>
+        console.log('start');
+
+        // 1.建立gsap物件，並套用方法製作動畫
+        //to方法先用選擇器選擇物件，再控制動畫內容。此處示範x軸與y軸的位移，實際上是以CSS transform屬性控制，因此自己在調整CSS時要避免使用transform。動畫設置上由預設起點至指定終點。
+        gsap.to('.mv01', {x : 300, y: 100});
+
+        //from()一樣以選擇器開頭，動畫設置上與to()相反，由指定起點至預設終點(此處是normla flow上的原始位置)。
+        gsap.from('.mv02', {x: 300});
+
+        //fromTo()可分別先後設定起點與終點位置
+        gsap.fromTo('.mv03', {x: 300}, {x: 600});
+
+        //set()可設定起始位置
+        gsap.set('.mv04', {x: 300, y: 300});
+
+
+
+        // 2.介紹方法裡的屬性
+        gsap.to('.mv05', {
+            //水平位移
+            x: 400,
+
+            //動畫時間，單位為秒
+            duration: 2,
+
+            //重複播放次數，不含預設播放的那一次。可用-1進行無限重複播放
+            repeat: 3,
+            //搭配repeat使用。將動畫進行倒帶播放，並會計入重複次數，預設值是false
+            yoyo: true,
+
+            //每次重複播放的延遲，單位為秒
+            repeatDelay: .5,
+            //首次播放延遲，單位為秒
+            delay: 1,
+
+            //旋轉z軸，不需打單位
+            rotation: 360,
+            //旋轉x軸
+            // rotationX: 360,
+            //旋轉y軸
+            // rotationY: 360,
+
+            //改變旋轉的基準點
+            transformOrigin: 'right top',
+
+            //放大，使用小數則會縮小。也可以針對水平或垂直放大
+            scale: 2,
+            // scaleX: 2,
+            // scaleY: 2,
+
+            //透明度
+            // opacity: 0,
+
+            //一樣改變透明度，但若變成0時，另外加上visibility: hidden
+            autoAlpha: 0,
+        });
+
+
+        // 3. timeline
+         //宣告timeline物件，並給予這個時間軸一些基礎設定
+        let tl = gsap.timeline({
+            repeat: 1,
+            yoyo: true,
+            repeatDelay: 1,
+            //設定時間軸內所有物件的共用屬性
+            defaults: {
+                backgroundColor: 'red',
+            },
+        });
+
+        tl.to('.mv06', {
+            x: 100,
+            scale: .5,
+            duration: 2,
+        }).to('.mv06', {
+            y: 100,
+            scale: 2,
+            duration: 2,
+        }).to('.mv06', {
+            x: 200,
+            opacity: 0,
+        }).to('.mv07', {  //在同一個時間軸上串連第二個物件
+            x: 400,
+        });
+
+
+        // 4. keyframes(不能和上述timeline寫法一起用)
+        gsap.to('.mv08', {
+            // duration: 5,  //統一設定時間長度，或是如下在各個kayframe內設置
+            keyframes: [  //以陣列來存放keyframes
+                {x: 150, duration: 2},
+                {y: 200, duration: 1},
+                {x: 200, rotation: 360, duration: 3},
+            ]
+        });
+
+
+
+        // 5. callback function
+        gsap.to('.mv09', {
+            x: 300,
+            duration: 1,
+            repeat: 3,  //若使用-1，則永遠不會呼叫底下的函式
+            backgroundColor: 'green',
+            onComplete: bgcolor,  //注意沒有小括號就能呼叫函式，加了反而結果會有問題
+        });
+
+        function bgcolor(){
+            $('.scene4').css('background-color', 'yellow');
+        }
+
+
+
+        // 6. 調整Ease(預設是power1)。可參考：https://greensock.com/docs/v3/Eases
+        gsap.to('.mv10', {
+            x: 300,
+            y: 100,
+            duration: 1.5,
+            // ease: 'back.out(2)',  //括號內的參數可增強動畫效果，預設值是1
+            ease: 'elastic.out(1)',
+            // ease: 'steps(10)',  //括號內的參數變成調整出現幾格
+        });
+
+
+        // 7. stagger示範，讓多個元素照指定時長依序出現
+        gsap.to('.stagger', {
+            x: 100,
+            stagger: .3,
+        });
+
+    </script>
+</body>
+</html>
